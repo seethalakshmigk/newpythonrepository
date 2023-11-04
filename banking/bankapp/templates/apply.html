@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body background="{% static 'images/new.png' %}" style="background-size: cover;background-attachment: fixed;">
+   <!-- Just an image -->
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img src="{% static 'images/logo.png' %}" style="height:30px;width:30px;">
+  </a>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item active">
+      <a class="nav-link" href="{% url 'bankapp:home' %}">Home <span class="sr-only">(current)</span></a>
+    </li>
+  </ul>
+</nav>
+<div class="container">
+    <h2>Apply for an Account</h2>
+    <button id="showFormButton" class="btn btn-primary">Show Application Form</button>
+    <div id="applicationForm" style="display: none; padding-left:450px;">
+      <form method="post" action="{% url 'bankapp:msg' %}">
+
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {{ form.name.label_tag }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ form.name }}<br>
+            {{ form.dob.label_tag }}&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.dob }}<br>
+            {{ form.age.label_tag }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.age }}<br>
+            {{ form.gender.label_tag }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ form.gender }}<br>
+            {{ form.phone_number.label_tag }}&nbsp;&nbsp;&nbsp;&nbsp; {{ form.phone_number }}<br>
+            {{ form.mail_id.label_tag }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ form.mail_id }}<br>
+            {{ form.address.label_tag }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ form.address }}<br>
+            {{ form.district.label_tag }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ form.district }}
+            <br>
+            {{ form.branch.label_tag }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <select name="branch" id="id_branch">
+                <option value="" selected>---------</option>
+            </select>
+            <br>
+            {{ form.account_type.label_tag }}&nbsp;&nbsp;&nbsp; {{ form.account_type }}<br>
+            {{ form.materials_provide.label_tag }}<br>
+            {% for choice in form.materials_provide %}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {{ choice.tag }} {{ choice.choice_label }}<br>
+            {% endfor %}
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#showFormButton').click(function() {
+            $('#applicationForm').toggle();
+        });
+    });
+
+    // Define a dictionary that maps districts to their corresponding branches
+    var branchesByDistrict = {
+        'Calicut': ['Balussery', 'Koyilandy', 'Ulliyeri', 'Panayi', 'Koduvalli'],
+        'Wayanad': ['Mananthavadi', 'Pookkod','kalpatta','sulthan batheri'],
+        'Thrissur': ['Chalakkudi', 'Poomala','manalur','puthur'] ,
+        'Palakkad': ['chittur', 'kanjirapuzha','kollankode','ayyapuram'] ,
+         'kannur': ['payyannur', 'Thalassery','kuthuparamba','mattannur'] ,
+
+    };
+
+    // Function to update the "Branch" dropdown based on the selected "District"
+    function updateBranchDropdown() {
+        var selectedDistrict = $('#id_district').val();
+        var branchDropdown = $('#id_branch');
+
+        // Clear the existing options
+        branchDropdown.empty();
+
+        // Add the default option
+        branchDropdown.append('<option value="" selected>---------</option>');
+
+        // Add the options based on the selected district
+        if (selectedDistrict in branchesByDistrict) {
+            $.each(branchesByDistrict[selectedDistrict], function(index, value) {
+                branchDropdown.append($('<option></option>').attr('value', value).text(value));
+            });
+        }
+    }
+
+    // Initial setup of the "Branch" dropdown
+    updateBranchDropdown();
+
+    // Event listener to update the "Branch" dropdown when the "District" selection changes
+    $('#id_district').change(function() {
+        updateBranchDropdown();
+    });
+
+
+</script>
+</body>
+</html>

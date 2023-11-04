@@ -1,0 +1,52 @@
+/* Style for labels */
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 10px; /* Add a margin from the left for labels */
+}
+
+/* Style for input fields */
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px; /* Reduce padding to make elements closer to the label */
+    margin: 5px 0; /* Adjust margin for spacing */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Style for radio buttons and checkboxes */
+input[type="radio"],
+input[type="checkbox"] {
+    margin-right: 30px;
+    margin-left: 30px; /* Add margin from the left for radio buttons and checkboxes */
+}
+
+/* Style for the submit button */
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-left: 10px; /* Add margin from the left for the submit button */
+}
+
+/* Style for radio buttons and checkboxes */
+input[type="radio"],
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* Style for the submit button */
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
